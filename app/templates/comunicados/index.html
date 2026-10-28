@@ -27,7 +27,7 @@
             </div>
             <div class="card-body">
                 <p style="color: var(--text-secondary); line-height: 1.7; white-space: pre-line;">{{ c.contenido }}</p>
-                <p style="font-size: 0.8125rem; color: var(--text-tertiary);">Publicado por: {{ c.autor.nombre_completo }}</p>
+                <p class="muted">Publicado por: {{ c.autor.nombre_completo }}</p>
             </div>
         </article>
         {% endfor %}

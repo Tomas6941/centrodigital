@@ -53,7 +53,7 @@
                         <td>{{ proyecto.fecha_postulacion.strftime('%d/%m/%Y') }}</td>
                         {% if current_user.has_role('admin') %}
                         <td>
-                            <button onclick="evaluarProyecto({{ proyecto.id }}, '{{ proyecto.titulo|replace("'", "\\'") }}')" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">Evaluar</button>
+                            <button onclick="evaluarProyecto({{ proyecto.id }}, '{{ proyecto.titulo|replace("'", "\\'") }}')" class="btn btn-secondary btn-sm">Evaluar</button>
                         </td>
                         {% endif %}
                     </tr>
@@ -73,7 +73,7 @@
             <h3>Sin proyectos</h3>
             <p>Aún no hay proyectos postulados en el banco de proyectos.</p>
             {% if current_user.has_role('alumno') %}
-            <a href="{{ url_for('proyectos.postular') }}" class="btn btn-primary" style="margin-top: var(--space-2);">Postular primer proyecto</a>
+            <a href="{{ url_for('proyectos.postular') }}" class="btn btn-primary mt-2">Postular primer proyecto</a>
             {% endif %}
         </div>
     </div>

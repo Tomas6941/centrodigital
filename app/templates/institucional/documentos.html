@@ -51,7 +51,7 @@
             <h3>Sin documentos</h3>
             <p>Aún no hay documentos subidos.</p>
             {% if current_user.has_role('admin') %}
-            <a href="{{ url_for('institucional.nuevo_documento') }}" class="btn btn-primary" style="margin-top: var(--space-2);">Subir primer documento</a>
+            <a href="{{ url_for('institucional.nuevo_documento') }}" class="btn btn-primary mt-2">Subir primer documento</a>
             {% endif %}
         </div>
     </div>

@@ -1,61 +1,43 @@
-// Centro de Estudiantes Digital - Apple Style Interactions
+// Centro de Estudiantes Digital — interacciones
+document.addEventListener('DOMContentLoaded', function () {
+  var toggle = document.getElementById('navToggle');
+  var menu = document.getElementById('navMenu');
+  var more = document.querySelector('.nav-more');
+  var moreBtn = more && more.querySelector('button');
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Mobile Navigation Toggle
-  const navToggle = document.getElementById('navToggle');
-  const navMenu = document.getElementById('navMenu');
-  
-  if (navToggle && navMenu) {
-    navToggle.addEventListener('click', function(e) {
+  function closeMenu() {
+    if (menu) menu.classList.remove('active');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  }
+  function closeMore() {
+    if (more) { more.classList.remove('open'); moreBtn.setAttribute('aria-expanded', 'false'); }
+  }
+
+  if (toggle && menu) {
+    toggle.addEventListener('click', function (e) {
       e.stopPropagation();
-      navMenu.classList.toggle('active');
-      
-      // Update toggle icon
-      if (navMenu.classList.contains('active')) {
-        navToggle.textContent = '✕';
-      } else {
-        navToggle.textContent = '☰';
-      }
+      var open = menu.classList.toggle('active');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-    
-    // Close menu when clicking outside
-    document.addEventListener('click', function(e) {
-      if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-        navMenu.classList.remove('active');
-        navToggle.textContent = '☰';
-      }
-    });
-    
-    // Close menu when clicking on a link
-    const navLinks = navMenu.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-      link.addEventListener('click', function() {
-        navMenu.classList.remove('active');
-        navToggle.textContent = '☰';
-      });
+    menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', closeMenu); });
+  }
+  if (moreBtn) {
+    moreBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = more.classList.toggle('open');
+      moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
   }
-  
-  // Add subtle press feedback to buttons and cards
-  const interactiveElements = document.querySelectorAll('.btn, .dashboard-card, .nav-link');
-  
-  interactiveElements.forEach(el => {
-    el.addEventListener('pointerdown', function() {
-      // Add a subtle class for press state if needed
-      this.style.transition = 'all 100ms cubic-bezier(0.25, 0.1, 0.25, 1)';
-    });
+  document.addEventListener('click', function (e) {
+    if (more && !more.contains(e.target)) closeMore();
+    if (menu && toggle && !menu.contains(e.target) && !toggle.contains(e.target)) closeMenu();
   });
-  
-  // Auto-hide flash messages after 5 seconds
-  const flashMessages = document.querySelectorAll('.flash');
-  flashMessages.forEach(flash => {
-    setTimeout(() => {
-      flash.style.transition = 'all 200ms cubic-bezier(0.25, 0.1, 0.25, 1)';
-      flash.style.opacity = '0';
-      flash.style.transform = 'translateY(-8px)';
-      setTimeout(() => {
-        flash.remove();
-      }, 200);
-    }, 5000);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeMore(); closeMenu(); }
+  });
+
+  // Mensajes flash: se ocultan solos a los 6 s
+  document.querySelectorAll('.flash').forEach(function (flash) {
+    setTimeout(function () { flash.remove(); }, 6000);
   });
 });

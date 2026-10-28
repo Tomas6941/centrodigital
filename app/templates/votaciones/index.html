@@ -35,7 +35,7 @@
             <div class="info-card-footer">
                 <a href="{{ url_for('votaciones.resultados', id=votacion.id) }}" class="btn-link">Ver resultados</a>
                 {% if votacion.activa and current_user.has_role('alumno') %}
-                <a href="{{ url_for('votaciones.votar', id=votacion.id) }}" class="btn btn-primary" style="padding: 8px 14px;">Votar</a>
+                <a href="{{ url_for('votaciones.votar', id=votacion.id) }}" class="btn btn-primary btn-sm">Votar</a>
                 {% endif %}
             </div>
         </article>
@@ -53,7 +53,7 @@
             <h3>Sin votaciones</h3>
             <p>Aún no hay votaciones creadas.</p>
             {% if current_user.has_role('admin') %}
-            <a href="{{ url_for('votaciones.nueva') }}" class="btn btn-primary" style="margin-top: var(--space-2);">Crear primera votación</a>
+            <a href="{{ url_for('votaciones.nueva') }}" class="btn btn-primary mt-2">Crear primera votación</a>
             {% endif %}
         </div>
     </div>

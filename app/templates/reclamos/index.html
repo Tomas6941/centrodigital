@@ -49,7 +49,7 @@
                         <option value="en_proceso">En proceso</option>
                         <option value="resuelto">Resuelto</option>
                     </select>
-                    <button type="submit" class="btn btn-primary" style="padding: 8px 14px;">Responder</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Responder</button>
                 </form>
             </div>
             {% endif %}
@@ -67,7 +67,7 @@
             <h3>Sin reclamos</h3>
             <p>Aún no hay reclamos registrados.</p>
             {% if current_user.has_role('alumno') %}
-            <a href="{{ url_for('reclamos.nuevo') }}" class="btn btn-primary" style="margin-top: var(--space-2);">Crear primer reclamo</a>
+            <a href="{{ url_for('reclamos.nuevo') }}" class="btn btn-primary mt-2">Crear primer reclamo</a>
             {% endif %}
         </div>
     </div>

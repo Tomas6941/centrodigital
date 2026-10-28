@@ -57,7 +57,7 @@
             <h3>Sin actas</h3>
             <p>Aún no hay actas registradas.</p>
             {% if current_user.has_role('admin') %}
-            <a href="{{ url_for('actas.nueva') }}" class="btn btn-primary" style="margin-top: var(--space-2);">Crear primera acta</a>
+            <a href="{{ url_for('actas.nueva') }}" class="btn btn-primary mt-2">Crear primera acta</a>
             {% endif %}
         </div>
     </div>

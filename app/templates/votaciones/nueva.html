@@ -44,13 +44,13 @@
                                 <input type="checkbox" name="proyectos" value="{{ proyecto.id }}" style="margin-top: 4px;">
                                 <div>
                                     <p style="font-weight: 500; color: var(--text-primary);">{{ proyecto.titulo }}</p>
-                                    <p style="font-size: 0.8125rem; color: var(--text-tertiary);">Monto estimado: ${{ "%.2f"|format(proyecto.monto_estimado) }}</p>
+                                    <p class="muted">Monto estimado: ${{ "%.2f"|format(proyecto.monto_estimado) }}</p>
                                 </div>
                             </label>
                             {% endfor %}
                         </div>
                         {% else %}
-                        <p style="font-size: 0.875rem; color: var(--text-tertiary);">No hay proyectos aprobados para incluir en esta votación.</p>
+                        <p class="muted">No hay proyectos aprobados para incluir en esta votación.</p>
                         {% endif %}
                     </div>
                 </div>

@@ -4,10 +4,17 @@
 
 {% block content %}
 <div class="container">
-    <div class="dashboard-header">
-        <h1>Bienvenido/a, {{ current_user.nombre }}</h1>
-        <p>Centro de Estudiantes Digital - Lista Azul Liberal Proa</p>
-    </div>
+    <section class="hero" aria-labelledby="bienvenida">
+        <div class="hero-inner">
+            <span class="eyebrow">Escuela Proa Rebeca Guber</span>
+            <h1 id="bienvenida">Hola, {{ current_user.nombre }}.</h1>
+            <p>Centro de Estudiantes Digital de la Lista Azul Liberal Proa: comunicados, votaciones, proyectos y cuentas en un solo lugar.</p>
+            <div class="hero-actions">
+                <a href="{{ url_for('comunicados.index') }}" class="btn btn-primary">Ver comunicados</a>
+                <a href="{{ url_for('votaciones.index') }}" class="btn btn-secondary">Votaciones</a>
+            </div>
+        </div>
+    </section>
 
     <div class="stats-grid">
         <div class="stat-card stat-saldo">
@@ -24,7 +31,12 @@
         </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-8);">
+    <div class="section-head section">
+        <span class="eyebrow">Actividad reciente</span>
+        <h2>Lo que está pasando en el centro.</h2>
+    </div>
+
+    <div class="two-col">
         <div class="card">
             <div class="card-header">
                 <h2>Votaciones abiertas</h2>
@@ -33,16 +45,16 @@
             <div class="card-body">
                 {% if votaciones_abiertas %}
                 {% for v in votaciones_abiertas %}
-                <div style="display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--border);">
+                <div class="row">
                     <div>
-                        <p style="font-weight: 500;">{{ v.titulo }}</p>
-                        <p style="font-size: 0.8125rem; color: var(--text-tertiary);">Cierra: {{ v.fecha_fin.strftime('%d/%m/%Y %H:%M') }}</p>
+                        <p class="row-title">{{ v.titulo }}</p>
+                        <p class="muted">Cierra: {{ v.fecha_fin.strftime('%d/%m/%Y %H:%M') }}</p>
                     </div>
-                    <a href="{{ url_for('votaciones.votar', id=v.id) }}" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8125rem;">Votar</a>
+                    <a href="{{ url_for('votaciones.votar', id=v.id) }}" class="btn btn-primary btn-sm">Votar</a>
                 </div>
                 {% endfor %}
                 {% else %}
-                <p style="color: var(--text-tertiary); font-size: 0.875rem;">No hay votaciones abiertas.</p>
+                <p class="muted">No hay votaciones abiertas.</p>
                 {% endif %}
             </div>
         </div>
@@ -55,22 +67,22 @@
             <div class="card-body">
                 {% if comunicados %}
                 {% for c in comunicados %}
-                <div style="padding: var(--space-3) 0; border-bottom: 1px solid var(--border);">
+                <div class="row-block">
                     <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-1);">
-                        <p style="font-weight: 500;">{{ c.titulo }}</p>
+                        <p class="row-title">{{ c.titulo }}</p>
                         {% if c.destacado %}<span class="badge badge-info">Destacado</span>{% endif %}
                     </div>
-                    <p style="font-size: 0.8125rem; color: var(--text-tertiary);">{{ c.fecha_creacion.strftime('%d/%m/%Y') }}</p>
+                    <p class="muted">{{ c.fecha_creacion.strftime('%d/%m/%Y') }}</p>
                 </div>
                 {% endfor %}
                 {% else %}
-                <p style="color: var(--text-tertiary); font-size: 0.875rem;">Sin comunicados.</p>
+                <p class="muted">Sin comunicados.</p>
                 {% endif %}
             </div>
         </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-8);">
+    <div class="two-col">
         <div class="card">
             <div class="card-header">
                 <h2>Últimos reclamos</h2>
@@ -79,16 +91,16 @@
             <div class="card-body">
                 {% if ultimos_reclamos %}
                 {% for r in ultimos_reclamos %}
-                <div style="padding: var(--space-3) 0; border-bottom: 1px solid var(--border);">
+                <div class="row-block">
                     <div style="display: flex; align-items: center; justify-content: space-between; gap: var(--space-2);">
-                        <p style="font-weight: 500;">{{ r.asunto }}</p>
+                        <p class="row-title">{{ r.asunto }}</p>
                         <span class="badge {% if r.estado == 'resuelto' %}badge-success{% elif r.estado == 'en_proceso' %}badge-warning{% else %}badge-info{% endif %}">{{ r.estado.replace('_', ' ').title() }}</span>
                     </div>
-                    <p style="font-size: 0.8125rem; color: var(--text-tertiary);">{{ r.fecha_creacion.strftime('%d/%m/%Y') }}</p>
+                    <p class="muted">{{ r.fecha_creacion.strftime('%d/%m/%Y') }}</p>
                 </div>
                 {% endfor %}
                 {% else %}
-                <p style="color: var(--text-tertiary); font-size: 0.875rem;">Sin reclamos.</p>
+                <p class="muted">Sin reclamos.</p>
                 {% endif %}
             </div>
         </div>
@@ -101,16 +113,16 @@
             <div class="card-body">
                 {% if ultimos_proyectos %}
                 {% for p in ultimos_proyectos %}
-                <div style="padding: var(--space-3) 0; border-bottom: 1px solid var(--border);">
+                <div class="row-block">
                     <div style="display: flex; align-items: center; justify-content: space-between; gap: var(--space-2);">
-                        <p style="font-weight: 500;">{{ p.titulo }}</p>
+                        <p class="row-title">{{ p.titulo }}</p>
                         <span class="badge {% if p.estado == 'aprobado' %}badge-success{% elif p.estado == 'rechazado' %}badge-danger{% elif p.estado == 'en evaluación' %}badge-warning{% else %}badge-info{% endif %}">{{ p.estado }}</span>
                     </div>
-                    <p style="font-size: 0.8125rem; color: var(--text-tertiary);">{{ p.fecha_postulacion.strftime('%d/%m/%Y') }}</p>
+                    <p class="muted">{{ p.fecha_postulacion.strftime('%d/%m/%Y') }}</p>
                 </div>
                 {% endfor %}
                 {% else %}
-                <p style="color: var(--text-tertiary); font-size: 0.875rem;">Sin proyectos.</p>
+                <p class="muted">Sin proyectos.</p>
                 {% endif %}
             </div>
         </div>
@@ -123,16 +135,21 @@
             <div class="card-body">
                 {% if proximos_eventos %}
                 {% for e in proximos_eventos %}
-                <div style="padding: var(--space-3) 0; border-bottom: 1px solid var(--border);">
-                    <p style="font-weight: 500;">{{ e.titulo }}</p>
-                    <p style="font-size: 0.8125rem; color: var(--text-tertiary);">{{ e.fecha.strftime('%d/%m/%Y') }}{% if e.hora %} • {{ e.hora.strftime('%H:%M') }}{% endif %}{% if e.lugar %} • {{ e.lugar }}{% endif %}</p>
+                <div class="row-block">
+                    <p class="row-title">{{ e.titulo }}</p>
+                    <p class="muted">{{ e.fecha.strftime('%d/%m/%Y') }}{% if e.hora %} • {{ e.hora.strftime('%H:%M') }}{% endif %}{% if e.lugar %} • {{ e.lugar }}{% endif %}</p>
                 </div>
                 {% endfor %}
                 {% else %}
-                <p style="color: var(--text-tertiary); font-size: 0.875rem;">Sin eventos próximos.</p>
+                <p class="muted">Sin eventos próximos.</p>
                 {% endif %}
             </div>
         </div>
+    </div>
+
+    <div class="section-head section">
+        <span class="eyebrow">Accesos</span>
+        <h2>Todo el centro, en un lugar.</h2>
     </div>
 
     <div class="dashboard-grid">
