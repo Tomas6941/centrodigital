@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Votaciones - Centro de Estudiantes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Votaciones</h1>
+            <p>Presupuesto participativo y votaciones del Centro de Estudiantes</p>
+        </div>
+        {% if current_user.has_role('admin') %}
+        <a href="{{ url_for('votaciones.nueva') }}" class="btn btn-primary">+ Nueva votación</a>
+        {% endif %}
+    </div>
+
+    {% if votaciones %}
+    <div class="grid-cards">
+        {% for votacion in votaciones %}
+        <article class="info-card">
+            <div class="info-card-header">
+                <h3 class="info-card-title">{{ votacion.titulo }}</h3>
+                <span class="badge {% if votacion.activa %}badge-success{% else %}badge-neutral{% endif %}">
+                    {% if votacion.activa %}Activa{% else %}Finalizada{% endif %}
+                </span>
+            </div>
+            <div class="info-card-body">
+                <p class="info-card-text">{{ votacion.descripcion }}</p>
+                <div class="info-card-meta">
+                    <span>Inicio: {{ votacion.fecha_inicio.strftime('%d/%m/%Y %H:%M') }}</span>
+                    <span>•</span>
+                    <span>Fin: {{ votacion.fecha_fin.strftime('%d/%m/%Y %H:%M') }}</span>
+                </div>
+            </div>
+            <div class="info-card-footer">
+                <a href="{{ url_for('votaciones.resultados', id=votacion.id) }}" class="btn-link">Ver resultados</a>
+                {% if votacion.activa and current_user.has_role('alumno') %}
+                <a href="{{ url_for('votaciones.votar', id=votacion.id) }}" class="btn btn-primary" style="padding: 8px 14px;">Votar</a>
+                {% endif %}
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card">
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 11 12 14 22 4"></polyline>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                </svg>
+            </div>
+            <h3>Sin votaciones</h3>
+            <p>Aún no hay votaciones creadas.</p>
+            {% if current_user.has_role('admin') %}
+            <a href="{{ url_for('votaciones.nueva') }}" class="btn btn-primary" style="margin-top: var(--space-2);">Crear primera votación</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

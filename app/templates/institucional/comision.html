@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Comisión - Centro de Estudiantes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Comisión Directiva</h1>
+            <p>Integrantes de la Lista Azul Liberal Proa</p>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom: var(--space-6);">
+        <div class="card-header">
+            <h2>Presidencia</h2>
+        </div>
+        <div class="table-container" style="border: none; border-radius: 0; box-shadow: none;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cargo</th>
+                        <th>Integrantes</th>
+                        {% if current_user.has_role('admin') %}<th>Acciones</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in cargos if c.tipo == 'presidencia' %}
+                    <tr>
+                        <td><strong>{{ c.cargo }}</strong></td>
+                        <td>{{ c.integrantes or '-' }}</td>
+                        {% if current_user.has_role('admin') %}
+                        <td>
+                            <form method="POST" action="{{ url_for('institucional.editar_comision', id=c.id) }}" style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+                                <input type="text" name="integrantes" class="form-input" value="{{ c.integrantes or '' }}" style="width: 280px;">
+                                <button type="submit" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">Guardar</button>
+                            </form>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom: var(--space-6);">
+        <div class="card-header">
+            <h2>Secretarías</h2>
+        </div>
+        <div class="table-container" style="border: none; border-radius: 0; box-shadow: none;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cargo</th>
+                        <th>Integrantes</th>
+                        {% if current_user.has_role('admin') %}<th>Acciones</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in cargos if c.tipo == 'secretaria' %}
+                    <tr>
+                        <td><strong>{{ c.cargo }}</strong></td>
+                        <td>{{ c.integrantes or '-' }}</td>
+                        {% if current_user.has_role('admin') %}
+                        <td>
+                            <form method="POST" action="{{ url_for('institucional.editar_comision', id=c.id) }}" style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+                                <input type="text" name="integrantes" class="form-input" value="{{ c.integrantes or '' }}" style="width: 320px;">
+                                <button type="submit" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">Guardar</button>
+                            </form>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Equipos de trabajo</h2>
+        </div>
+        <div class="table-container" style="border: none; border-radius: 0; box-shadow: none;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cargo</th>
+                        <th>Integrantes</th>
+                        {% if current_user.has_role('admin') %}<th>Acciones</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in cargos if c.tipo == 'equipo' %}
+                    <tr>
+                        <td><strong>{{ c.cargo }}</strong></td>
+                        <td>{{ c.integrantes or '-' }}</td>
+                        {% if current_user.has_role('admin') %}
+                        <td>
+                            <form method="POST" action="{{ url_for('institucional.editar_comision', id=c.id) }}" style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+                                <input type="text" name="integrantes" class="form-input" value="{{ c.integrantes or '' }}" style="width: 280px;">
+                                <button type="submit" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">Guardar</button>
+                            </form>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

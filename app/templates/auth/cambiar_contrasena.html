@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Cambiar contraseña - Centro de Estudiantes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Cambiar contraseña</h1>
+            <p>Actualizá tu contraseña de acceso</p>
+        </div>
+        <a href="{{ url_for('auth.perfil') }}" class="btn btn-secondary">Volver al perfil</a>
+    </div>
+
+    <div class="card form-card">
+        <div class="card-header">
+            <h2>Datos de seguridad</h2>
+        </div>
+        <form method="POST">
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Contraseña actual *</label>
+                        <input type="password" name="actual" class="form-input" required>
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Nueva contraseña *</label>
+                        <input type="password" name="nueva" class="form-input" minlength="6" required>
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Confirmar nueva contraseña *</label>
+                        <input type="password" name="confirmar" class="form-input" minlength="6" required>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer form-actions">
+                <a href="{{ url_for('auth.perfil') }}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Actualizar contraseña</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

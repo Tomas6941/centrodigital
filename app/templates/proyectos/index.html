@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Banco de Proyectos - Centro de Estudiantes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Banco de Proyectos</h1>
+            <p>Postulaciones, evaluación y seguimiento de proyectos</p>
+        </div>
+        {% if current_user.has_role('alumno') %}
+        <a href="{{ url_for('proyectos.postular') }}" class="btn btn-primary">+ Postular proyecto</a>
+        {% endif %}
+    </div>
+
+    {% if proyectos %}
+    <div class="card">
+        <div class="card-header">
+            <h2>Proyectos</h2>
+        </div>
+        <div class="table-container" style="border: none; border-radius: 0; box-shadow: none;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Postulante</th>
+                        <th>Curso</th>
+                        <th>Monto estimado</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        {% if current_user.has_role('admin') %}
+                        <th>Acciones</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for proyecto in proyectos %}
+                    <tr>
+                        <td><strong>{{ proyecto.titulo }}</strong></td>
+                        <td>{{ proyecto.postulante.nombre_completo }}</td>
+                        <td>{{ proyecto.curso }}</td>
+                        <td>${{ "%.2f"|format(proyecto.monto_estimado) }}</td>
+                        <td>
+                            {% if proyecto.estado == 'aprobado' %}<span class="badge badge-success">Aprobado</span>
+                            {% elif proyecto.estado == 'rechazado' %}<span class="badge badge-danger">Rechazado</span>
+                            {% elif proyecto.estado == 'en evaluación' %}<span class="badge badge-warning">En evaluación</span>
+                            {% elif proyecto.estado == 'presentado' %}<span class="badge badge-info">Presentado</span>
+                            {% elif proyecto.estado == 'en ejecución' %}<span class="badge badge-info">En ejecución</span>
+                            {% else %}<span class="badge badge-neutral">{{ proyecto.estado }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ proyecto.fecha_postulacion.strftime('%d/%m/%Y') }}</td>
+                        {% if current_user.has_role('admin') %}
+                        <td>
+                            <button onclick="evaluarProyecto({{ proyecto.id }}, '{{ proyecto.titulo|replace("'", "\\'") }}')" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8125rem;">Evaluar</button>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="card">
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                </svg>
+            </div>
+            <h3>Sin proyectos</h3>
+            <p>Aún no hay proyectos postulados en el banco de proyectos.</p>
+            {% if current_user.has_role('alumno') %}
+            <a href="{{ url_for('proyectos.postular') }}" class="btn btn-primary" style="margin-top: var(--space-2);">Postular primer proyecto</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% if current_user.has_role('admin') %}
+<div id="modalEvaluar" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Evaluar Proyecto</h2>
+            <span class="modal-close" onclick="document.getElementById('modalEvaluar').style.display='none'">&times;</span>
+        </div>
+        <form method="POST" id="formEvaluar" class="modal-form">
+            <p style="margin-bottom: 1rem;"><strong>Proyecto:</strong> <span id="proyectoTitulo"></span></p>
+            <div class="form-group">
+                <label class="form-label">Acción</label>
+                <select name="accion" class="form-input" required>
+                    <option value="evaluacion">Poner en Evaluación</option>
+                    <option value="aprobar">Aprobar</option>
+                    <option value="rechazar">Rechazar</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Motivo / Observaciones</label>
+                <textarea name="motivo" class="form-textarea" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function evaluarProyecto(id, titulo) {
+    document.getElementById('proyectoTitulo').textContent = titulo;
+    document.getElementById('formEvaluar').action = '/proyectos/evaluar/' + id;
+    document.getElementById('modalEvaluar').style.display = 'flex';
+}
+</script>
+{% endif %}
+{% endblock %}

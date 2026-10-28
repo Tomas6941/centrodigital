@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Centro de Estudiantes - Escuela Proa Rebeca Guber{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% if current_user.is_authenticated %}
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="nav-logo">
+                <span class="nav-title">Lista Azul Liberal Proa</span>
+            </div>
+            <button class="nav-toggle" id="navToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="{{ url_for('main.dashboard') }}" class="nav-link">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('comunicados.index') }}" class="nav-link">Comunicados</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('calendario.index') }}" class="nav-link">Calendario</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('presupuesto.index') }}" class="nav-link">Presupuesto</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('proyectos.index') }}" class="nav-link">Proyectos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('actas.index') }}" class="nav-link">Actas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('reclamos.index') }}" class="nav-link">Reclamos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('votaciones.index') }}" class="nav-link">Votaciones</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('institucional.comision') }}" class="nav-link">Comisión</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('institucional.documentos') }}" class="nav-link">Documentos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('institucional.ayuda') }}" class="nav-link">Ayuda</a>
+                </li>
+                {% if current_user.has_role('admin') %}
+                <li class="nav-item">
+                    <a href="{{ url_for('admin.index') }}" class="nav-link nav-admin">Administración</a>
+                </li>
+                {% endif %}
+                <li class="nav-item nav-user">
+                    <a href="{{ url_for('auth.perfil') }}" class="nav-link">{{ current_user.nombre_completo }} ({{ current_user.rol.nombre }})</a>
+                    <a href="{{ url_for('auth.logout') }}" class="nav-link nav-logout">Cerrar sesión</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    {% endif %}
+
+    <main class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 Escuela Proa Rebeca Guber - Lista Azul Liberal Proa</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

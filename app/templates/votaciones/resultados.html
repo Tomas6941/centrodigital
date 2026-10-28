@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Resultados - {{ votacion.titulo }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Resultados</h1>
+            <p>{{ votacion.titulo }}</p>
+        </div>
+        <a href="{{ url_for('votaciones.index') }}" class="btn btn-secondary">Volver</a>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Votación</h2>
+            <span class="badge {% if votacion.activa %}badge-success{% else %}badge-neutral{% endif %}">
+                {% if votacion.activa %}Activa{% else %}Finalizada{% endif %}
+            </span>
+        </div>
+        <div class="card-body">
+            <p style="color: var(--text-secondary); line-height: 1.6;">{{ votacion.descripcion }}</p>
+            <div class="info-card-meta">
+                <span>Inicio: {{ votacion.fecha_inicio.strftime('%d/%m/%Y %H:%M') }}</span>
+                <span>•</span>
+                <span>Fin: {{ votacion.fecha_fin.strftime('%d/%m/%Y %H:%M') }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: var(--space-6);">
+        <div class="card">
+            <div class="card-header">
+                <h2>Resultados por proyecto</h2>
+            </div>
+            <div class="table-container" style="border: none; border-radius: 0; box-shadow: none;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Proyecto</th>
+                            <th>Monto estimado</th>
+                            <th>Votos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in resultados %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                <strong>{{ r.proyecto.titulo }}</strong>
+                                <p style="font-size: 0.8125rem; color: var(--text-tertiary); margin-top: 2px;">{{ r.proyecto.descripcion[:80] }}{% if r.proyecto.descripcion|length > 80 %}...{% endif %}</p>
+                            </td>
+                            <td>${{ "%.2f"|format(r.proyecto.monto_estimado) }}</td>
+                            <td><span class="badge badge-info">{{ r.votos }} voto{% if r.votos != 1 %}s{% endif %}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

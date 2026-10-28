@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Documentos - Centro de Estudiantes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Documentos</h1>
+            <p>Estatuto, reglamento, formularios y normativa</p>
+        </div>
+        {% if current_user.has_role('admin') %}
+        <a href="{{ url_for('institucional.nuevo_documento') }}" class="btn btn-primary">+ Subir documento</a>
+        {% endif %}
+    </div>
+
+    {% if docs %}
+    <div class="grid-cards">
+        {% for d in docs %}
+        <article class="info-card">
+            <div class="info-card-header">
+                <h3 class="info-card-title">{{ d.titulo }}</h3>
+            </div>
+            <div class="info-card-body">
+                {% if d.descripcion %}
+                <p class="info-card-text">{{ d.descripcion }}</p>
+                {% endif %}
+                <div class="info-card-meta">
+                    <span>Subido el {{ d.fecha_creacion.strftime('%d/%m/%Y') }}</span>
+                    {% if d.subido_por %}
+                    <span>•</span>
+                    <span>{{ d.subido_por.nombre_completo }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="info-card-footer">
+                <a href="{{ url_for('static', filename='uploads/' + d.archivo_path) }}" target="_blank" class="btn-link">Descargar</a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card">
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+            </div>
+            <h3>Sin documentos</h3>
+            <p>Aún no hay documentos subidos.</p>
+            {% if current_user.has_role('admin') %}
+            <a href="{{ url_for('institucional.nuevo_documento') }}" class="btn btn-primary" style="margin-top: var(--space-2);">Subir primer documento</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

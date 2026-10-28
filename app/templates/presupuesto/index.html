@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Presupuesto - Centro de Estudiantes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Presupuesto</h1>
+            <p>Ingresos, egresos y saldo del Centro de Estudiantes</p>
+        </div>
+        {% if current_user.has_role('admin', 'tesorero') %}
+        <a href="{{ url_for('presupuesto.nuevo') }}" class="btn btn-primary">+ Agregar movimiento</a>
+        {% endif %}
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card stat-ingreso">
+            <h3>Ingresos</h3>
+            <p class="stat-amount">${{ "%.2f"|format(ingresos) }}</p>
+        </div>
+        <div class="stat-card stat-egreso">
+            <h3>Egresos</h3>
+            <p class="stat-amount">${{ "%.2f"|format(egresos) }}</p>
+        </div>
+        <div class="stat-card stat-saldo">
+            <h3>Saldo</h3>
+            <p class="stat-amount">${{ "%.2f"|format(saldo) }}</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Movimientos</h2>
+        </div>
+        {% if movimientos %}
+        <div class="table-container" style="border: none; border-radius: 0; box-shadow: none;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>Concepto</th>
+                        <th>Monto</th>
+                        <th>Cargado por</th>
+                        <th>Comprobante</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mov in movimientos %}
+                    <tr>
+                        <td>{{ mov.fecha.strftime('%d/%m/%Y') }}</td>
+                        <td>{% if mov.tipo == 'ingreso' %}<span class="badge badge-success">Ingreso</span>{% else %}<span class="badge badge-danger">Egreso</span>{% endif %}</td>
+                        <td>{{ mov.concepto }}</td>
+                        <td>${{ "%.2f"|format(mov.monto) }}</td>
+                        <td>{{ mov.cargado_por.nombre_completo if mov.cargado_por else '-' }}</td>
+                        <td>{% if mov.comprobante_path %}<a href="{{ url_for('static', filename='uploads/' + mov.comprobante_path) }}" target="_blank" class="btn-link">Ver</a>{% else %}-{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                    <path d="M2 10h20"></path>
+                </svg>
+            </div>
+            <h3>Sin movimientos</h3>
+            <p>Aún no hay movimientos registrados en el presupuesto.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Votar - {{ votacion.titulo }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>{{ votacion.titulo }}</h1>
+            <p>{{ votacion.descripcion }}</p>
+        </div>
+        <a href="{{ url_for('votaciones.index') }}" class="btn btn-secondary">Volver</a>
+    </div>
+
+    <div class="card form-card">
+        <div class="card-header">
+            <h2>Selecciona tu voto</h2>
+        </div>
+        <form method="POST">
+            <div class="card-body">
+                <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                    {% for opcion in votacion.opciones %}
+                    <label style="display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-4); background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-lg); cursor: pointer; transition: all 150ms var(--ease-out);">
+                        <input type="radio" name="opcion" value="{{ opcion.id }}" required style="margin-top: 4px;">
+                        <div style="flex: 1;">
+                            <p style="font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-1);">{{ opcion.proyecto.titulo }}</p>
+                            <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-2);">{{ opcion.proyecto.descripcion }}</p>
+                            <p style="font-size: 0.8125rem; color: var(--text-tertiary);">Monto estimado: ${{ "%.2f"|format(opcion.proyecto.monto_estimado) }}</p>
+                        </div>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer form-actions">
+                <a href="{{ url_for('votaciones.index') }}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Confirmar voto</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

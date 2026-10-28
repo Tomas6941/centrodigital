@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión - Centro de Estudiantes{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="auth-logo">
+            <h1>Lista Azul Liberal Proa</h1>
+            <p>Escuela Proa Rebeca Guber</p>
+            <h2>Centro de Estudiantes Digital</h2>
+        </div>
+
+        <form method="POST" class="auth-form">
+            <div class="form-group">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input type="email" id="email" name="email" class="form-input" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" id="password" name="password" class="form-input" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Solo los usuarios creados por la administración pueden acceder</p>
+            <a href="{{ url_for('auth.recuperar') }}" class="btn-link" style="display: inline-block; margin-top: var(--space-2);">¿Olvidaste tu contraseña?</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

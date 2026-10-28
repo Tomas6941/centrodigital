@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Comunicados - Centro de Estudiantes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Comunicados</h1>
+            <p>Novedades y avisos del Centro de Estudiantes</p>
+        </div>
+        {% if current_user.has_role('admin') %}
+        <a href="{{ url_for('comunicados.nuevo') }}" class="btn btn-primary">+ Nuevo comunicado</a>
+        {% endif %}
+    </div>
+
+    {% if comunicados %}
+    <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+        {% for c in comunicados %}
+        <article class="card">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: var(--space-2);">
+                    <h2>{{ c.titulo }}</h2>
+                    {% if c.destacado %}<span class="badge badge-info">Destacado</span>{% endif %}
+                </div>
+                <span class="badge badge-neutral">{{ c.fecha_creacion.strftime('%d/%m/%Y %H:%M') }}</span>
+            </div>
+            <div class="card-body">
+                <p style="color: var(--text-secondary); line-height: 1.7; white-space: pre-line;">{{ c.contenido }}</p>
+                <p style="font-size: 0.8125rem; color: var(--text-tertiary);">Publicado por: {{ c.autor.nombre_completo }}</p>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card">
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+            </div>
+            <h3>Sin comunicados</h3>
+            <p>Aún no hay comunicados publicados.</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

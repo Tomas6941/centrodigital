@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva Votación - Centro de Estudiantes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Nueva votación</h1>
+            <p>Crear una votación con proyectos aprobados</p>
+        </div>
+        <a href="{{ url_for('votaciones.index') }}" class="btn btn-secondary">Volver</a>
+    </div>
+
+    <div class="card form-card">
+        <div class="card-header">
+            <h2>Datos de la votación</h2>
+        </div>
+        <form method="POST">
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Título *</label>
+                        <input type="text" name="titulo" class="form-input" placeholder="Ej. Presupuesto participativo 2026" required>
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Descripción *</label>
+                        <textarea name="descripcion" class="form-textarea" rows="4" placeholder="Describe el objetivo de la votación" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Fecha y hora de inicio *</label>
+                        <input type="datetime-local" name="fecha_inicio" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Fecha y hora de fin *</label>
+                        <input type="datetime-local" name="fecha_fin" class="form-input" required>
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Proyectos a incluir *</label>
+                        {% if proyectos %}
+                        <div style="display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4); background: var(--bg-primary); border-radius: var(--radius-md); border: 1px solid var(--border);">
+                            {% for proyecto in proyectos %}
+                            <label style="display: flex; align-items: flex-start; gap: var(--space-3); cursor: pointer;">
+                                <input type="checkbox" name="proyectos" value="{{ proyecto.id }}" style="margin-top: 4px;">
+                                <div>
+                                    <p style="font-weight: 500; color: var(--text-primary);">{{ proyecto.titulo }}</p>
+                                    <p style="font-size: 0.8125rem; color: var(--text-tertiary);">Monto estimado: ${{ "%.2f"|format(proyecto.monto_estimado) }}</p>
+                                </div>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p style="font-size: 0.875rem; color: var(--text-tertiary);">No hay proyectos aprobados para incluir en esta votación.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer form-actions">
+                <a href="{{ url_for('votaciones.index') }}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Crear votación</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

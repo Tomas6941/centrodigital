@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Ayuda - Centro de Estudiantes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Ayuda y preguntas frecuentes</h1>
+            <p>Guía rápida para usar el sistema</p>
+        </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+        {% for f in faqs %}
+        <article class="card">
+            <div class="card-header">
+                <h2 style="font-size: 1rem;">{{ f.pregunta }}</h2>
+            </div>
+            <div class="card-body">
+                <p style="color: var(--text-secondary); line-height: 1.7;">{{ f.respuesta }}</p>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

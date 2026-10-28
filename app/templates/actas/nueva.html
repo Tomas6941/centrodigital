@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva Acta - Centro de Estudiantes{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Nueva acta</h1>
+            <p>Registrar una reunión del Centro de Estudiantes</p>
+        </div>
+        <a href="{{ url_for('actas.index') }}" class="btn btn-secondary">Volver</a>
+    </div>
+
+    <div class="card form-card">
+        <div class="card-header">
+            <h2>Datos del acta</h2>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Título *</label>
+                        <input type="text" name="titulo" class="form-input" placeholder="Ej. Reunión ordinaria N° 5" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Fecha *</label>
+                        <input type="date" name="fecha" class="form-input" required>
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Asistentes *</label>
+                        <textarea name="asistentes" class="form-textarea" rows="3" placeholder="Nombres y cargos de los asistentes" required></textarea>
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Temas tratados *</label>
+                        <textarea name="temas_tratados" class="form-textarea" rows="4" placeholder="Orden del día y temas abordados" required></textarea>
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Acuerdos *</label>
+                        <textarea name="acuerdos" class="form-textarea" rows="4" placeholder="Resoluciones y compromisos" required></textarea>
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Archivo (opcional)</label>
+                        <input type="file" name="archivo" class="form-file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer form-actions">
+                <a href="{{ url_for('actas.index') }}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Guardar acta</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

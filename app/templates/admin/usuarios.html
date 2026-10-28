@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Gestión de Usuarios - Administración{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Gestión de usuarios</h1>
+            <p>Crear usuarios y asignar roles</p>
+        </div>
+        <a href="{{ url_for('admin.index') }}" class="btn btn-secondary">Volver</a>
+    </div>
+
+    <div class="card" style="margin-bottom: var(--space-6);">
+        <div class="card-header">
+            <h2>Crear nuevo usuario</h2>
+        </div>
+        <form method="POST" action="{{ url_for('admin.crear_usuario') }}">
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Nombre *</label>
+                        <input type="text" name="nombre" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Apellido *</label>
+                        <input type="text" name="apellido" class="form-input" required>
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Correo electrónico *</label>
+                        <input type="email" name="email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contraseña *</label>
+                        <input type="password" name="password" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Curso *</label>
+                        <select name="curso" class="form-select" required>
+                            {% for c in cursos %}
+                            <option value="{{ c }}">{{ c }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label class="form-label">Rol *</label>
+                        <select name="rol_id" class="form-select" required>
+                            {% for rol in roles %}
+                            <option value="{{ rol.id }}">{{ rol.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer form-actions">
+                <button type="submit" class="btn btn-primary">Crear usuario</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Usuarios registrados</h2>
+        </div>
+        <div class="table-container" style="border: none; border-radius: 0; box-shadow: none;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Curso</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td><strong>{{ user.nombre_completo }}</strong></td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.curso }}</td>
+                        <td><span class="badge badge-neutral">{{ user.rol.nombre }}</span></td>
+                        <td>{% if user.activo %}<span class="badge badge-success">Activo</span>{% else %}<span class="badge badge-danger">Inactivo</span>{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
